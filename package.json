@@ -26,8 +26,8 @@
     "three": "^0.182.0"
   },
   "scripts": {
-    "build": "webpack --mode=production --config-name=threestrap",
-    "build:all": "webpack --mode=production",
+    "build": "webpack --mode=production && webpack --mode=production --config-name=threestrap",
+    "build:umd": "webpack --mode=production --config-name=threestrap",
     "dev": "webpack --mode=development --watch --config-name=threestrap",
     "prepack": "npm run build",
     "lint": "eslint src/**/*.js",
