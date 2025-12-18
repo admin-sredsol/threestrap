@@ -11,7 +11,18 @@
   "exports": {
     "import": "./build/threestrap.module.js",
     "require": "./build/threestrap.js",
-    "default": "./build/threestrap.js"
+    "default": "./build/threestrap.js",
+    "./src/bootstrap.js": "./src/bootstrap.js",
+    "./src/binder.js": "./src/binder.js",
+    "./src/core/renderer.js": "./src/core/renderer.js",
+    "./src/core/three.js": "./src/core/three.js",
+    "./src/core/clock.js": "./src/core/clock.js",
+    "./src/core/loop.js": "./src/core/loop.js",
+    "./src/core/now.js": "./src/core/now.js",
+    "./src/core/raf.js": "./src/core/raf.js",
+    "./src/core/time.js": "./src/core/time.js",
+    "./src/core/timer.js": "./src/core/timer.js",
+    "./src/core/tween.js": "./src/core/tween.js"
   },
   "dependencies": {
     "stats.js": "^0.17.0"
@@ -27,6 +38,7 @@
   },
   "scripts": {
     "build": "webpack --mode=production && webpack --mode=production --config-name=threestrap",
+    "build:esm": "webpack --mode=production",
     "build:umd": "webpack --mode=production --config-name=threestrap",
     "dev": "webpack --mode=development --watch --config-name=threestrap",
     "prepack": "npm run build",
@@ -56,6 +68,6 @@
     "webpack-cli": "^5.0.1",
     "webpack-stream": "^6.1.2"
   },
-  "author": "Steven Wittens",
+  "author": "Steven Wittens, S.H.Sarma",
   "license": "MIT"
 }
