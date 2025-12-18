@@ -39,32 +39,64 @@ Bootstrap.registerPlugin("camera", {
     const o = this.options;
     const old = three.camera;
 
-    if (!three.camera || event.changes.type || event.changes.klass) {
-      const klass =
-        o.klass ||
-        {
-          perspective: PerspectiveCamera,
-          orthographic: OrthographicCamera,
-        }[o.type] ||
-        Camera;
+    let klass =
+      o.klass ||
+      {
+        perspective: PerspectiveCamera,
+        orthographic: OrthographicCamera,
+      }[o.type] ||
+      Camera;
 
-      three.camera = o.parameters ? new klass(o.parameters) : new klass();
+    // Only create a new camera if type or klass changed, or if camera doesn't exist
+    if (!three.camera || event.changes.type || event.changes.klass) {
+      if (o.parameters) {
+        three.camera = new klass(o.parameters);
+      } else if (klass === PerspectiveCamera) {
+        three.camera = new PerspectiveCamera(
+          o.fov,
+          o.aspect || this.aspect,
+          o.near,
+          o.far
+        );
+      } else if (klass === OrthographicCamera) {
+        three.camera = new OrthographicCamera(
+          o.left,
+          o.right,
+          o.top,
+          o.bottom,
+          o.near,
+          o.far
+        );
+      } else {
+        three.camera = new klass();
+      }
     }
 
-    Object.entries(o).forEach(
-      function ([key]) {
-        if (Object.prototype.hasOwnProperty.call(three.camera, key))
-          three.camera[key] = o[key];
-      }.bind(this)
-    );
+    // Assign only known camera properties
+    [
+      "near",
+      "far",
+      "fov",
+      "aspect",
+      "left",
+      "right",
+      "top",
+      "bottom",
+      // add more if needed
+    ].forEach((key) => {
+      if (o[key] !== undefined && key in three.camera) {
+        three.camera[key] = o[key];
+      }
+    });
 
     this.update(three);
 
-    old === three.camera ||
+    if (old !== three.camera) {
       three.trigger({
         type: "camera",
         camera: three.camera,
       });
+    }
   },
 
   resize: function (event, three) {

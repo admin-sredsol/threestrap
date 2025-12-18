@@ -1,9 +1,10 @@
-import { WebGL1Renderer } from "three";
+import { WebGLRenderer, WebGL1Renderer } from "three";
 import { Bootstrap } from "../bootstrap";
 
 Bootstrap.registerPlugin("renderer", {
   defaults: {
-    klass: WebGL1Renderer,
+    // Default to WebGLRenderer (WebGL2), but allow user to override
+    klass: WebGLRenderer,
     parameters: {
       depth: true,
       stencil: true,
@@ -15,8 +16,15 @@ Bootstrap.registerPlugin("renderer", {
   listen: ["resize"],
 
   install: function (three) {
+    // Allow user to specify klass as a string for convenience
+    let RendererClass = this.options.klass;
+    if (typeof RendererClass === "string") {
+      if (RendererClass === "WebGL1Renderer") RendererClass = WebGL1Renderer;
+      else RendererClass = WebGLRenderer;
+    }
+
     // Instantiate Three renderer
-    const renderer = (three.renderer = new this.options.klass(
+    const renderer = (three.renderer = new RendererClass(
       this.options.parameters
     ));
     three.canvas = renderer.domElement;

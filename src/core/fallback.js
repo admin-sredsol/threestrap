@@ -18,9 +18,12 @@ Bootstrap.registerPlugin("fallback", {
     let cnv, gl;
     try {
       cnv = document.createElement("canvas");
-      gl = cnv.getContext("webgl") || cnv.getContext("experimental-webgl");
+      gl =
+        cnv.getContext("webgl2") ||
+        cnv.getContext("webgl") ||
+        cnv.getContext("experimental-webgl");
       if (!gl || this.options.force) {
-        throw "WebGL unavailable.";
+        throw new Error("WebGL unavailable.");
       }
       three.fallback = false;
     } catch (e) {

@@ -6,7 +6,13 @@
     "type": "git",
     "url": "https://github.com/unconed/threestrap.git"
   },
-  "main": "src/index.js",
+  "main": "./build/threestrap.js",
+  "module": "./build/threestrap.module.js",
+  "exports": {
+    "import": "./build/threestrap.module.js",
+    "require": "./build/threestrap.js",
+    "default": "./build/threestrap.js"
+  },
   "dependencies": {
     "stats.js": "^0.17.0"
   },
@@ -17,10 +23,11 @@
     "FUNDING.yml"
   ],
   "peerDependencies": {
-    "three": ">=0.118.0"
+    "three": "^0.182.0"
   },
   "scripts": {
     "build": "webpack --mode=production --config-name=threestrap",
+    "build:all": "webpack --mode=production",
     "dev": "webpack --mode=development --watch --config-name=threestrap",
     "prepack": "npm run build",
     "lint": "eslint src/**/*.js",

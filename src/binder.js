@@ -57,7 +57,7 @@ export class Binder {
         // Return callback
         return callback;
       } else {
-        throw "Cannot bind '" + key + "' in " + this.__name;
+        throw new Error("Cannot bind '" + key + "' in " + this.__name);
       }
     };
   }
@@ -122,9 +122,11 @@ export class Binder {
   }
 
   static _polyfill(object, methods, callback) {
-    methods.map(function (_method) {
-      return object.method;
-    });
-    if (methods.length) callback(methods[0]);
+    for (const method of methods) {
+      if (typeof object[method] === "function") {
+        callback(method);
+        return;
+      }
+    }
   }
 }

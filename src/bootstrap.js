@@ -14,9 +14,9 @@ const each = (array, cb) => {
   for (const item of array) {
     const success = cb(item, i, array);
     if (success === false) break;
-    i++
+    i++;
   }
-}
+};
 
 export class Bootstrap {
   static initClass() {
@@ -160,7 +160,7 @@ export class Bootstrap {
 
     // Look up aliases recursively
     function recurse(list, out, level) {
-      if (level >= 256) throw "Plug-in alias recursion detected.";
+      if (level >= 256) throw new Error("Plug-in alias recursion detected.");
       list = list.filter(pred);
       list.forEach(function (name) {
         const alias = aliases[name];
@@ -183,7 +183,7 @@ export class Bootstrap {
     plugins = this.resolve(plugins);
 
     // Install in order
-    each(plugins, (name) => this.__install(name))
+    each(plugins, (name) => this.__install(name));
 
     // Fire off ready event
     this.__ready();
@@ -198,16 +198,16 @@ export class Bootstrap {
     }
 
     // Uninstall in reverse order
-    (plugins || this.__installed)
-      .reverse()
-      .forEach((p) => this.__uninstall(p));
+    (plugins || this.__installed).reverse().forEach((p) => this.__uninstall(p));
   }
 
   __install(name) {
     // Sanity check
     const ctor = this.__options.plugindb[name];
     if (!ctor)
-      throw "[three.install] Cannot install. '" + name + "' is not registered.";
+      throw new Error(
+        "[three.install] Cannot install. '" + name + "' is not registered."
+      );
 
     if (this.plugins[name])
       return console.warn("[three.install] " + name + " is already installed.");

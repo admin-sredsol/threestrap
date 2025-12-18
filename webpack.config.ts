@@ -1,14 +1,14 @@
-import * as path from "node:path"
-import TerserPlugin from 'terser-webpack-plugin'
-import type { Configuration } from "webpack"
-import * as glob from "glob"
+import * as path from "node:path";
+import TerserPlugin from "terser-webpack-plugin";
+import type { Configuration } from "webpack";
+import * as glob from "glob";
 
 const LIBRARY_NAME = "Threestrap";
 const PATHS = {
   entryPoint: path.resolve(__dirname, "src/index.js"),
   libraryBundles: path.resolve(__dirname, "build"),
   testBundle: path.resolve(__dirname, "build_tests"),
-  testFiles:  glob.sync("./test/**/*.spec.js"),
+  testFiles: glob.sync("./test/**/*.spec.js"),
 };
 
 const umdBase = (path: string): Configuration => ({
@@ -47,7 +47,7 @@ const library: Configuration = {
       }),
     ],
   },
-}
+};
 
 const configs: Configuration[] = [
   {
@@ -61,9 +61,28 @@ const configs: Configuration[] = [
     mode: "development",
     devtool: "eval",
     entry: {
-      tests: PATHS.testFiles
-    }
-  }
-]
+      tests: PATHS.testFiles,
+    },
+  },
+  // ESM build
+  {
+    ...library,
+    output: {
+      path: PATHS.libraryBundles,
+      filename: "threestrap.module.js",
+      library: {
+        type: "module",
+      },
+    },
+    experiments: {
+      outputModule: true,
+    },
+    externalsType: "module",
+    externals: {
+      three: "three",
+    },
+    name: "threestrap-esm",
+  },
+];
 
-export default configs
+export default configs;

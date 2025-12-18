@@ -19,7 +19,7 @@ export class MultiRenderer {
 
     // elements are stacked back-to-front
     for (let i = 0; i < rendererClasses.length; i++) {
-      const renderer = new rendererClasses[i](rendererParameters[i]);
+      const renderer = new rendererClasses[i](rendererParameters[i] || {});
       renderer.domElement.style.position = "absolute";
       renderer.domElement.style.top = "0px";
       renderer.domElement.style.left = "0px";

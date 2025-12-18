@@ -18,6 +18,10 @@ export class VRControls {
     this.standingMatrix = new Matrix4();
     this.frameData = null;
 
+    console.warn(
+      "VRControls: This control uses the deprecated WebVR API, which is no longer supported in modern browsers. Please migrate to WebXR and use three.js's built-in WebXR support. See https://threejs.org/docs/index.html#manual/en/introduction/How-to-create-VR-content"
+    );
+
     if ("VRFrameData" in window) {
       // eslint-disable-next-line no-undef
       this.frameData = new VRFrameData();
@@ -102,7 +106,7 @@ export class VRControls {
           this.standingMatrix.fromArray(
             this.vrDisplay.stageParameters.sittingToStandingTransform
           );
-          this.object.applyMatrix(this.standingMatrix);
+          this.object.applyMatrix4(this.standingMatrix);
         } else {
           this.object.position.setY(this.object.position.y + this.userHeight);
         }

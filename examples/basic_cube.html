@@ -2,38 +2,33 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Threestrap - Basic Cubes</title>
-    <script
-      type="text/javascript"
-      src="https://cdn.jsdelivr.net/npm/three@0.137.0/build/three.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="../build/threestrap.js"
-    ></script>
+    <title>Threestrap - Basic Cubes (ESM)</title>
   </head>
   <body>
-    <script>
+    <script type="module">
+      import * as THREE from "https://unpkg.com/three@0.182.0/build/three.module.js";
+      import { Bootstrap } from "../build/threestrap.module.js";
+
       // Bootstrap core + stats plugin
-      var three = new Threestrap.Bootstrap("core", "stats");
+      const three = new Bootstrap("core", "stats");
 
       // Random generator
-      var sd = 12345;
+      let sd = 12345;
       function rnd() {
         sd = Math.abs(Math.sin(sd * 10000) * 1000) % 1;
         return sd * 2 - 1;
       }
 
       // Insert cubes
-      var colors = [
+      const colors = [
         new THREE.Color(0x3090ff),
         new THREE.Color(0x10a0ff),
         new THREE.Color(0x60109f),
       ];
-      var n = colors.length;
-      for (var i = 0; i < 100; ++i) {
-        var sz = 1 + rnd() * 0.2;
-        var mesh = new THREE.Mesh(
+      const n = colors.length;
+      for (let i = 0; i < 100; ++i) {
+        const sz = 1 + rnd() * 0.2;
+        const mesh = new THREE.Mesh(
           new THREE.BoxGeometry(sz, sz, sz),
           new THREE.MeshPhongMaterial({ color: colors[i % n] })
         );
@@ -42,13 +37,13 @@
       }
 
       // Lights
-      var hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
+      const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
       hemiLight.color.setHSL(0.6, 1, 0.6);
       hemiLight.groundColor.setHSL(0.095, 1, 0.75);
       hemiLight.position.set(0, 500, 0);
       three.scene.add(hemiLight);
 
-      var dirLight = new THREE.DirectionalLight(0xffffff, 1);
+      const dirLight = new THREE.DirectionalLight(0xffffff, 1);
       dirLight.color.setHSL(0.1, 1, 0.95);
       dirLight.position.set(-1, 1.75, 1);
       dirLight.position.multiplyScalar(50);
@@ -56,9 +51,9 @@
 
       // Orbit the camera
       three.on("update", function () {
-        var t = three.Time.now / 3;
-        var x = Math.cos(t) * 3;
-        var z = Math.sin(t) * 3;
+        const t = three.Time.now / 3;
+        const x = Math.cos(t) * 3;
+        const z = Math.sin(t) * 3;
         three.camera.position.set(x, 0.5, z);
         three.camera.lookAt(new THREE.Vector3());
       });
