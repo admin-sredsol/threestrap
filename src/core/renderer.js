@@ -1,4 +1,4 @@
-import { WebGLRenderer, WebGL1Renderer } from "three";
+import { WebGLRenderer } from "three";
 import { Bootstrap } from "../bootstrap";
 
 Bootstrap.registerPlugin("renderer", {
@@ -16,11 +16,11 @@ Bootstrap.registerPlugin("renderer", {
   listen: ["resize"],
 
   install: function (three) {
-    // Allow user to specify klass as a string for convenience
+    // Allow user to specify klass as a string for convenience.
+    // All string values now map to WebGLRenderer for simplicity.
     let RendererClass = this.options.klass;
     if (typeof RendererClass === "string") {
-      if (RendererClass === "WebGL1Renderer") RendererClass = WebGL1Renderer;
-      else RendererClass = WebGLRenderer;
+      RendererClass = WebGLRenderer;
     }
 
     // Instantiate Three renderer
